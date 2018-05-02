@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/progress"
+    android:visibility="visible"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:elevation="18dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/cargando"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:srcCompat="@drawable/cientopolis_logo"
+            android:id="@+id/logo"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/text_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:text="Cargando"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/error"
+        android:visibility="gone"
+        android:layout_margin="8dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/text_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:text="Mensaje de error"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:text="retry"
+            android:id="@+id/retry"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:layout_height="40dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"/>
+    </LinearLayout>
+</LinearLayout>

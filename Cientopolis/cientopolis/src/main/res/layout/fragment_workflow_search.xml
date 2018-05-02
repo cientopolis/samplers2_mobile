@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre del científico"
+                android:lines="1"
+                android:textSize="14sp"
+                android:id="@+id/cientificName"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:inputType="textPersonName" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo de proyecto"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="8dp"/>
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:spinnerMode="dialog"
+                    android:layout_height="30dp"
+                    android:id="@+id/project_type"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"></Spinner>
+            </LinearLayout>
+            </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_gravity="right"
+        android:tint="@android:color/white"
+        app:srcCompat="@android:drawable/ic_menu_search"
+        android:id="@+id/search_button"/>
+
+</LinearLayout>

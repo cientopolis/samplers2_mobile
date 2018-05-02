@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Cientopolis</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="empty_workflows">No hay Workflows</string>
+
+    <string-array name="project_types">
+        <item>Arboles</item>
+        <item>Tomates</item>
+        <item>Peces</item>
+        <item>Vacas</item>
+        <item>Aves</item>
+        <item>Lechuga</item>
+        <item>Clima</item>
+    </string-array>
+</resources>
