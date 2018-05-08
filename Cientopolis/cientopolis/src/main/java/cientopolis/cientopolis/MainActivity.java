@@ -49,7 +49,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        goToMain();
+        navigationView.getMenu().getItem(0).setChecked(true);
+        Fragment fragment = new MainFragment();
+        goToFragment(fragment);
     }
 
     @Override
@@ -95,37 +97,29 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.workflows) {
             // See workflows
             Fragment fragment = new WorkflowsFragment();
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.content_main, fragment);
-            ft.commit();
+            goToFragment(fragment);
 
 
         } else if (id == R.id.profile) {
             // look for a workflows
             Fragment fragment = new SearchWorkflowFragment();
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.content_main, fragment);
-            ft.commit();
+            goToFragment(fragment);
+
         } else if (id == R.id.logout) {
             // logout
             Fragment fragment = new LoginFragment();
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.content_main, fragment);
-            ft.commit();
+            goToFragment(fragment);
 
         } else if (id == R.id.home){
             //home
-            goToMain();
+            Fragment fragment = new MainFragment();
+            goToFragment(fragment);
         }
 
         return true;
     }
 
-    public void goToMain(){
-        Fragment fragment = new MainFragment();
+    public void goToFragment(Fragment fragment){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.content_main, fragment);

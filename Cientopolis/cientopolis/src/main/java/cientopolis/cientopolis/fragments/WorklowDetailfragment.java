@@ -45,7 +45,7 @@ public class WorklowDetailfragment extends Fragment implements RequestController
         if (savedInstanceState == null ) {
             // if i haven´t an instance i request for one.
             Map<String, String> params = getParams();
-            requestController.get(new TypeToken<ResponseDTO<List<String>>>() {}.getType(), "/games/mygames", 6, params);
+            //requestController.get(new TypeToken<ResponseDTO<List<String>>>() {}.getType(), "/games/mygames", 6, params);
             responseOk(1,null);
         } else {
             //
