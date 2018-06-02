@@ -15,21 +15,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cientopolis.cientopolis.R;
+import cientopolis.cientopolis.RequestController;
 import cientopolis.cientopolis.adapters.WorkflowAdapter;
 import cientopolis.cientopolis.interfaces.RequestControllerListener;
 import cientopolis.cientopolis.interfaces.WorkflowClickListener;
-import cientopolis.cientopolis.model.ResponseDTO;
+import cientopolis.cientopolis.models.ResponseDTO;
+import cientopolis.cientopolis.models.WorkflowModel;
+
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Created by nicolas.valentini on 2/7/17.
  */
 
-public class WorkflowsFragment extends Fragment implements RequestControllerListener<String> {
+public class WorkflowsFragment extends Fragment implements RequestControllerListener<WorkflowModel> {
 
     private View view;
     private RecyclerView recycler;
@@ -38,9 +45,11 @@ public class WorkflowsFragment extends Fragment implements RequestControllerList
     private TextView textError;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Button retry;
+    private RequestController requestController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        requestController = new RequestController(getContext(), this);
         view = inflater.inflate(R.layout.fragment_workflows_list, container, false);
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -77,11 +86,16 @@ public class WorkflowsFragment extends Fragment implements RequestControllerList
         });
         if (savedInstanceState == null ) {
             // if i haven´t an instance i request for one.
-            responseOk();
+            requestController.get(new TypeToken<ResponseDTO<List<WorkflowModel>>>() {}.getType(), "projects", 6, getParams());
         } else {
             //
         }
         return view;
+    }
+
+    private Map<String, String> getParams(){
+        Map<String, String> params = new HashMap<>();
+        return params;
     }
 
     public void responseOk(){
@@ -125,12 +139,47 @@ public class WorkflowsFragment extends Fragment implements RequestControllerList
     }
 
     @Override
-    public void responseOk(Integer id, ResponseDTO<String> response) {
-
+    public void responseOk(Integer id, ResponseDTO<WorkflowModel> response) {
+        mSwipeRefreshLayout.setRefreshing(false);
+        List<String> cientifics = new ArrayList<String>();
+        cientifics.add("Nicolas Valentini");
+        cientifics.add("Alex Rojas");
+        cientifics.add("Diego Torres");
+        cientifics.add("Juan Perez");
+        cientifics.add("Jose Gomez");
+        cientifics.add("Jose Gomez");
+        cientifics.add("Jose Gomez");
+        cientifics.add("Jose Gomez");
+        cientifics.add("Jose Gomez");
+        cientifics.add("Jose Gomez");
+        if(true){
+            downloading.setVisibility(View.GONE);
+            error.setVisibility(View.GONE);
+            recycler.setVisibility(View.VISIBLE);
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+            recycler.setAdapter(new WorkflowAdapter(cientifics, new WorkflowClickListener() {
+                @Override
+                public void clicked(Integer id) {
+                    Fragment fragment = new WorklowDetailfragment();
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.content_main, fragment);
+                    ft.commit();
+                }
+            }));
+        }
+        else {
+            retry.setVisibility(View.GONE);
+            downloading.setVisibility(View.GONE);
+            error.setVisibility(View.VISIBLE);
+            mSwipeRefreshLayout.setVisibility(View.GONE);
+            recycler.setVisibility(View.GONE);
+            textError.setText(R.string.empty_workflows);
+        }
     }
 
     @Override
-    public void responseError(Integer id, ResponseDTO<String> response) {
+    public void responseError(Integer id, ResponseDTO<WorkflowModel> response) {
 
     }
 }

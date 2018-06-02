@@ -1,7 +1,6 @@
 package cientopolis.cientopolis;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -25,7 +24,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import cientopolis.cientopolis.interfaces.RequestControllerListener;
-import cientopolis.cientopolis.model.ResponseDTO;
+import cientopolis.cientopolis.models.ResponseDTO;
 
 /**
  * Created by nicolas.valentini on 4/7/17.
@@ -33,7 +32,7 @@ import cientopolis.cientopolis.model.ResponseDTO;
 
 public class RequestController {
 
-    private final String URL = "http://localhost:8000/webpage/";
+    private final String URL = "http://10.0.2.2:8000/webpage/";
     private VolleyManager volleyManager;
     private Context context;
     private RequestControllerListener listener;

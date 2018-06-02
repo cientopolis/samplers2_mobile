@@ -8,17 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.gson.reflect.TypeToken;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import cientopolis.cientopolis.Activities.StartWorkflowActivity;
+import cientopolis.cientopolis.activities.StartWorkflowActivity;
 import cientopolis.cientopolis.R;
 import cientopolis.cientopolis.RequestController;
 import cientopolis.cientopolis.interfaces.RequestControllerListener;
-import cientopolis.cientopolis.model.ResponseDTO;
+import cientopolis.cientopolis.models.ResponseDTO;
 
 /**
  * Created by nicov on 11/9/17.

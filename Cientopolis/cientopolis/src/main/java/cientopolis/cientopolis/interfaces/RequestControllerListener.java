@@ -1,6 +1,6 @@
 package cientopolis.cientopolis.interfaces;
 
-import cientopolis.cientopolis.model.ResponseDTO;
+import cientopolis.cientopolis.models.ResponseDTO;
 
 /**
  * Created by nicolas.valentini on 4/7/17.
