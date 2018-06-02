@@ -1,4 +1,4 @@
-package cientopolis.cientopolis.model;
+package cientopolis.cientopolis.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;

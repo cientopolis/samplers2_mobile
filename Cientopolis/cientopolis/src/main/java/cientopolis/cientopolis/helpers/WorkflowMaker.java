@@ -14,7 +14,6 @@ import org.cientopolis.samplers.model.Workflow;
 
 import java.util.ArrayList;
 
-import cientopolis.cientopolis.models.OptionsToShowModel;
 import cientopolis.cientopolis.models.StepModel;
 import cientopolis.cientopolis.models.WorkflowModel;
 
@@ -35,10 +34,10 @@ public class WorkflowMaker {
                     step = new InformationStep(actualStep.getId(),actualStep.getTextToShow(),actualStep.getNextStepId() == 0 ? null : actualStep.getNextStepId() );
 
                     break;
-                case "PhotoStep":
+                /*case "PhotoStep":
                     step = new PhotoStep(actualStep.getId(),actualStep.getInstructionsToShow(),actualStep.getImageToOverlay(),actualStep.getNextStepId());
 
-                    break;
+                    break;*/
                 case "LocationStep":
                     step = new LocationStep(actualStep.getId(),actualStep.getTextToShow(),actualStep.getNextStepId());
 
@@ -47,11 +46,11 @@ public class WorkflowMaker {
                     step = new InsertTextStep(actualStep.getId(),actualStep.getTextToShow(),actualStep.getSampleText(),actualStep.getMaxLength(), InsertTextStep.InputType.TYPE_TEXT,actualStep.getOptional(),actualStep.getNextStepId());
 
                     break;*/
-                case "SelectOneStep":
+              /*  case "SelectOneStep":
 
                     step = new SelectOneStep(actualStep.getId(), WorkflowMaker.getOptionToShow(actualStep.getOptionsToShow()),actualStep.getTitle());
 
-                    break;
+                    break;*/
                 case "TimeStep":
                     step = new InsertTimeStep(actualStep.getId(),actualStep.getTextToShow(),actualStep.getNextStepId());
 
@@ -83,7 +82,7 @@ public class WorkflowMaker {
         return steps;
     }
 
-    public static ArrayList<SelectOneOption> getOptionToShow(ArrayList<OptionsToShowModel> options){
+   /* public static ArrayList<SelectOneOption> getOptionToShow(ArrayList<OptionsToShowModel> options){
         ArrayList<SelectOneOption> optionsToShow = new ArrayList<SelectOneOption>();
         for (OptionsToShowModel option : options) {
             SelectOneOption optionToShow = new SelectOneOption(option.getId(),option.getTextToShow(),option.getNextStepId());
@@ -91,5 +90,5 @@ public class WorkflowMaker {
 
         }
         return optionsToShow;
-    }
+    }*/
 }

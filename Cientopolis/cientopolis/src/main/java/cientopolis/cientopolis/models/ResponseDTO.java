@@ -1,4 +1,4 @@
-package cientopolis.cientopolis.model;
+package cientopolis.cientopolis.models;
 
 /**
  * Created by nicolas.valentini on 4/7/17.

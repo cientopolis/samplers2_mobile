@@ -1,4 +1,4 @@
-package cientopolis.cientopolis.model;
+package cientopolis.cientopolis.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +11,8 @@ public class StepModel implements Serializable {
 
     private ArrayList<String> optionsToShow;
 
+    private int id;
+    private String sampleText;
     private String stepType;
     private String sampleTest;
     private String inputType;
@@ -18,14 +20,16 @@ public class StepModel implements Serializable {
     private String imageToOverlay;
     private String title;
     private String textToShow;
+    private int nextStepId;
 
     private Integer maxLength;
 
     private Boolean optional;
 
-    public StepModel(ArrayList<String> optionsToShow, String stepType, String sampleTest, String inputType, String instructToShow, String imageToOverlay, String title, String textToShow, Integer maxLength, Boolean optional) {
-
+    public StepModel(ArrayList<String> optionsToShow, int id, String sampleText, String stepType, String sampleTest, String inputType, String instructToShow, String imageToOverlay, String title, String textToShow, int nextStepId, Integer maxLength, Boolean optional) {
         this.optionsToShow = optionsToShow;
+        this.id = id;
+        this.sampleText = sampleText;
         this.stepType = stepType;
         this.sampleTest = sampleTest;
         this.inputType = inputType;
@@ -33,12 +37,38 @@ public class StepModel implements Serializable {
         this.imageToOverlay = imageToOverlay;
         this.title = title;
         this.textToShow = textToShow;
+        this.nextStepId = nextStepId;
         this.maxLength = maxLength;
         this.optional = optional;
     }
 
     public StepModel(){
 
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSampleText() {
+        return sampleText;
+    }
+
+    public void setSampleText(String sampleText) {
+        this.sampleText = sampleText;
+    }
+
+    public int getNextStepId() {
+        return nextStepId;
+    }
+
+    public void setNextStepId(int nextStepId) {
+        this.nextStepId = nextStepId;
     }
 
     public ArrayList<String> getOptionsToShow() {
