@@ -105,7 +105,6 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
 
     @Override
     public void responseError(Integer id, ResponseDTO<WorkflowModel> response) {
-        Integer in = 1;
 
     }
 }
