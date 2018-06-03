@@ -9,50 +9,33 @@ import java.util.ArrayList;
 
 public class StepModel implements Serializable {
 
-    private ArrayList<String> optionsToShow;
+    private ArrayList<OptionsToShowModel> optionsToShow;
 
-    private int id;
+    private Integer id;
     private String sampleText;
-    private String stepType;
-    private String sampleTest;
+    private StepType stepType;
     private String inputType;
-    private String instructToShow;
-    private String imageToOverlay;
     private String title;
     private String textToShow;
-    private int nextStepId;
-
+    private Integer nextStepId;
     private Integer maxLength;
-
     private Boolean optional;
 
-    public StepModel(ArrayList<String> optionsToShow, int id, String sampleText, String stepType, String sampleTest, String inputType, String instructToShow, String imageToOverlay, String title, String textToShow, int nextStepId, Integer maxLength, Boolean optional) {
-        this.optionsToShow = optionsToShow;
-        this.id = id;
-        this.sampleText = sampleText;
-        this.stepType = stepType;
-        this.sampleTest = sampleTest;
-        this.inputType = inputType;
-        this.instructToShow = instructToShow;
-        this.imageToOverlay = imageToOverlay;
-        this.title = title;
-        this.textToShow = textToShow;
-        this.nextStepId = nextStepId;
-        this.maxLength = maxLength;
-        this.optional = optional;
-    }
 
-    public StepModel(){
-
-    }
-
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getNextStepId() {
+        return nextStepId;
+    }
+
+    public void setNextStepId(Integer nextStepId) {
+        this.nextStepId = nextStepId;
     }
 
     public String getSampleText() {
@@ -63,37 +46,22 @@ public class StepModel implements Serializable {
         this.sampleText = sampleText;
     }
 
-    public int getNextStepId() {
-        return nextStepId;
-    }
-
-    public void setNextStepId(int nextStepId) {
-        this.nextStepId = nextStepId;
-    }
-
-    public ArrayList<String> getOptionsToShow() {
+    public ArrayList<OptionsToShowModel> getOptionsToShow() {
         return optionsToShow;
     }
 
-    public void setOptionsToShow(ArrayList<String> optionsToShow) {
+    public void setOptionsToShow(ArrayList<OptionsToShowModel> optionsToShow) {
         this.optionsToShow = optionsToShow;
     }
 
-    public String getStepType() {
+    public StepType getStepType() {
         return stepType;
     }
 
-    public void setStepType(String stepType) {
+    public void setStepType(StepType stepType) {
         this.stepType = stepType;
     }
 
-    public String getSampleTest() {
-        return sampleTest;
-    }
-
-    public void setSampleTest(String sampleTest) {
-        this.sampleTest = sampleTest;
-    }
 
     public String getInputType() {
         return inputType;
@@ -101,22 +69,6 @@ public class StepModel implements Serializable {
 
     public void setInputType(String inputType) {
         this.inputType = inputType;
-    }
-
-    public String getInstructToShow() {
-        return instructToShow;
-    }
-
-    public void setInstructToShow(String instructToShow) {
-        this.instructToShow = instructToShow;
-    }
-
-    public String getImageToOverlay() {
-        return imageToOverlay;
-    }
-
-    public void setImageToOverlay(String imageToOverlay) {
-        this.imageToOverlay = imageToOverlay;
     }
 
     public String getTitle() {

@@ -7,19 +7,13 @@ import android.view.MenuItem;
 
 import com.google.gson.reflect.TypeToken;
 
-import org.cientopolis.samplers.model.BaseStep;
-import org.cientopolis.samplers.model.InformationStep;
-import org.cientopolis.samplers.model.InsertDateStep;
-import org.cientopolis.samplers.model.InsertTimeStep;
-import org.cientopolis.samplers.model.SelectOneOption;
-import org.cientopolis.samplers.model.SelectOneStep;
-import org.cientopolis.samplers.model.Workflow;
+import org.cientopolis.samplers.framework.Workflow;
+import org.cientopolis.samplers.framework.base.BaseStep;
 import org.cientopolis.samplers.ui.SamplersMainActivity;
-import org.cientopolis.samplers.ui.take_sample.TakeSampleActivity;
+import org.cientopolis.samplers.ui.TakeSampleActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cientopolis.cientopolis.R;
@@ -42,7 +36,7 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestController = new RequestController(this.getApplicationContext(), this);
-        requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/4", 6, getParams());
+        requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/9", 6, getParams());
     }
 
     @Override
@@ -72,13 +66,18 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
     protected Workflow getWorkflow() {
 
         Workflow workflow = new Workflow();
-
-        for (BaseStep step: WorkflowMaker.getSteps(model)) {
+        ArrayList<BaseStep> steps = WorkflowMaker.getSteps(model);
+        for (BaseStep step: steps) {
             workflow.addStep(step);
         }
 
 
         return workflow;
+    }
+
+    @Override
+    protected Integer getMainHelpResourceId() {
+        return null;
     }
 
     private Map<String, String> getParams(){
@@ -106,5 +105,7 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
 
     @Override
     public void responseError(Integer id, ResponseDTO<WorkflowModel> response) {
+        Integer in = 1;
+
     }
 }
