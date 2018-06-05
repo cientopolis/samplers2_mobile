@@ -31,12 +31,18 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
 
     private RequestController requestController;
     private WorkflowModel model;
+    private Integer workflowId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getIntent().hasExtra("workflowId")) {
+            workflowId = (Integer) getIntent().getSerializableExtra("workflowId");
+        }
         requestController = new RequestController(this.getApplicationContext(), this);
-        requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/9", 6, getParams());
+        requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/"+workflowId.toString(), 6, getParams());
     }
 
     @Override

@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,21 +19,34 @@ import cientopolis.cientopolis.R;
 import cientopolis.cientopolis.RequestController;
 import cientopolis.cientopolis.interfaces.RequestControllerListener;
 import cientopolis.cientopolis.models.ResponseDTO;
+import cientopolis.cientopolis.models.WorkflowDetailModel;
 
 /**
  * Created by nicov on 11/9/17.
  */
 
-public class WorklowDetailfragment extends Fragment implements RequestControllerListener<String> {
+public class WorklowDetailfragment extends Fragment implements RequestControllerListener<WorkflowDetailModel> {
 
     private View view;
     private Button joinButton;
+    private TextView description ;
     private RequestController requestController;
+    private Integer projectId;
+
+
+
+    public static WorklowDetailfragment newInstance(Integer projectId) {
+        WorklowDetailfragment fragment = new WorklowDetailfragment();
+        fragment.projectId=projectId;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        requestController = new RequestController(getContext(), this);
         view = inflater.inflate(R.layout.fragment_workflow_detail, container, false);
         joinButton = (Button) view.findViewById(R.id.join_project);
+        description = (TextView) view.findViewById(R.id.text_description);
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,8 +58,7 @@ public class WorklowDetailfragment extends Fragment implements RequestController
         if (savedInstanceState == null ) {
             // if i haven´t an instance i request for one.
             Map<String, String> params = getParams();
-            //requestController.get(new TypeToken<ResponseDTO<List<String>>>() {}.getType(), "/games/mygames", 6, params);
-            responseOk(1,null);
+            requestController.get(new TypeToken<ResponseDTO<WorkflowDetailModel>>() {}.getType(), "project/"+projectId.toString(), 6, params);
         } else {
             //
         }
@@ -52,18 +67,25 @@ public class WorklowDetailfragment extends Fragment implements RequestController
 
     private Map<String, String> getParams(){
         Map<String, String> params = new HashMap<>();
-        params.put("social_id", "1");
-        params.put("token", "1");
         return params;
     }
 
     @Override
-    public void responseOk(Integer id, ResponseDTO<String> response) {
-
+    public void responseOk(Integer id, final ResponseDTO<WorkflowDetailModel> response) {
+        description.setText(response.getData().getDescription());
+        joinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), StartWorkflowActivity.class);
+                //agregar id del workflow para buscarlo en StartWorkflowActivity
+                intent.putExtra("workflowId", response.getData().getWorkflow());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
-    public void responseError(Integer id, ResponseDTO<String> response) {
+    public void responseError(Integer id, ResponseDTO<WorkflowDetailModel> response) {
 
     }
 }

@@ -24,7 +24,6 @@
            </intent-filter>
        </activity>
        <activity android:name=".activities.StartWorkflowActivity" ></activity>
-
    </application>
 
 </manifest>
