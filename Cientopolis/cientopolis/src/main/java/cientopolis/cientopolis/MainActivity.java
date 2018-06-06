@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import cientopolis.cientopolis.fragments.LoginFragment;
 import cientopolis.cientopolis.fragments.MainFragment;
+import cientopolis.cientopolis.fragments.ProfileFragment;
 import cientopolis.cientopolis.fragments.WorkflowsFragment;
 import cientopolis.cientopolis.fragments.SearchWorkflowFragment;
 
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.profile) {
             // look for a workflows
             Fragment fragment = new SearchWorkflowFragment();
-            goToFragment(fragment);
+            goToFragment(ProfileFragment.newInstance(1));
 
         } else if (id == R.id.logout) {
             // logout
