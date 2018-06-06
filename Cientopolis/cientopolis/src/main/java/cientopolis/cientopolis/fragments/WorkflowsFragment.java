@@ -24,9 +24,8 @@ import cientopolis.cientopolis.RequestController;
 import cientopolis.cientopolis.adapters.WorkflowAdapter;
 import cientopolis.cientopolis.interfaces.RequestControllerListener;
 import cientopolis.cientopolis.interfaces.WorkflowClickListener;
+import cientopolis.cientopolis.models.ProjectsModel;
 import cientopolis.cientopolis.models.ResponseDTO;
-import cientopolis.cientopolis.models.WorkflowModel;
-
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -36,7 +35,7 @@ import com.google.gson.reflect.TypeToken;
  * Created by nicolas.valentini on 2/7/17.
  */
 
-public class WorkflowsFragment extends Fragment implements RequestControllerListener<WorkflowModel> {
+public class WorkflowsFragment extends Fragment implements RequestControllerListener<List<ProjectsModel>>  {
 
     private View view;
     private RecyclerView recycler;
@@ -71,13 +70,13 @@ public class WorkflowsFragment extends Fragment implements RequestControllerList
                 downloading.setVisibility(View.VISIBLE);
                 error.setVisibility(View.GONE);
                 recycler.setVisibility(View.GONE);
-                //requestController.get(new TypeToken<ResponseDTO<List<Project>>>() {}.getType(), "/projects/myprojects", 6, params);
+                requestController.get(new TypeToken<ResponseDTO<List<ProjectsModel>>>() {}.getType(), "projects", 6, getParams());
             }
         });
         retry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //requestController.get(new TypeToken<ResponseDTO<List<Project>>>() {}.getType(), "/projects/myprojects", 6, params);
+                requestController.get(new TypeToken<ResponseDTO<List<ProjectsModel>>>() {}.getType(), "projects", 6, getParams());
                 downloading.setVisibility(View.VISIBLE);
                 error.setVisibility(View.GONE);
                 recycler.setVisibility(View.GONE);
@@ -86,7 +85,7 @@ public class WorkflowsFragment extends Fragment implements RequestControllerList
         });
         if (savedInstanceState == null ) {
             // if i haven´t an instance i request for one.
-            requestController.get(new TypeToken<ResponseDTO<List<WorkflowModel>>>() {}.getType(), "projects", 6, getParams());
+            requestController.get(new TypeToken<ResponseDTO<List<ProjectsModel>>>() {}.getType(), "projects", 6, getParams());
         } else {
             //
         }
@@ -98,72 +97,21 @@ public class WorkflowsFragment extends Fragment implements RequestControllerList
         return params;
     }
 
-    public void responseOk(){
-        mSwipeRefreshLayout.setRefreshing(false);
-        List<String> cientifics = new ArrayList<String>();
-        cientifics.add("Nicolas Valentini");
-        cientifics.add("Alex Rojas");
-        cientifics.add("Diego Torres");
-        cientifics.add("Juan Perez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        if(cientifics.size()>0){
-            downloading.setVisibility(View.GONE);
-            error.setVisibility(View.GONE);
-            recycler.setVisibility(View.VISIBLE);
-            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-            recycler.setAdapter(new WorkflowAdapter(cientifics, new WorkflowClickListener() {
-                @Override
-                public void clicked(Integer id) {
-                    Fragment fragment = new WorklowDetailfragment();
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.content_main, fragment);
-                    ft.commit();
-                }
-            }));
-        }
-        else {
-            retry.setVisibility(View.GONE);
-            downloading.setVisibility(View.GONE);
-            error.setVisibility(View.VISIBLE);
-            mSwipeRefreshLayout.setVisibility(View.GONE);
-            recycler.setVisibility(View.GONE);
-            textError.setText(R.string.empty_workflows);
-        }
-
-    }
-
     @Override
-    public void responseOk(Integer id, ResponseDTO<WorkflowModel> response) {
+    public void responseOk(Integer id, ResponseDTO<List<ProjectsModel>> response) {
         mSwipeRefreshLayout.setRefreshing(false);
-        List<String> cientifics = new ArrayList<String>();
-        cientifics.add("Nicolas Valentini");
-        cientifics.add("Alex Rojas");
-        cientifics.add("Diego Torres");
-        cientifics.add("Juan Perez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        cientifics.add("Jose Gomez");
-        if(true){
+
+        if(response.getData().size() >  0){
             downloading.setVisibility(View.GONE);
             error.setVisibility(View.GONE);
             recycler.setVisibility(View.VISIBLE);
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-            recycler.setAdapter(new WorkflowAdapter(cientifics, new WorkflowClickListener() {
+            recycler.setAdapter(new WorkflowAdapter(response.getData(), new WorkflowClickListener() {
                 @Override
                 public void clicked(Integer id) {
-                    Fragment fragment = new WorklowDetailfragment();
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.content_main, fragment);
+                    ft.replace(R.id.content_main, WorklowDetailfragment.newInstance(id));
                     ft.commit();
                 }
             }));
@@ -179,7 +127,7 @@ public class WorkflowsFragment extends Fragment implements RequestControllerList
     }
 
     @Override
-    public void responseError(Integer id, ResponseDTO<WorkflowModel> response) {
+    public void responseError(Integer id, ResponseDTO<List<ProjectsModel>>  response) {
 
     }
 }

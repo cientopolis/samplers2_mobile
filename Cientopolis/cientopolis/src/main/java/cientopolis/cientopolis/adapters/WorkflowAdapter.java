@@ -1,27 +1,18 @@
 package cientopolis.cientopolis.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import cientopolis.cientopolis.R;
-import cientopolis.cientopolis.fragments.SearchWorkflowFragment;
 import cientopolis.cientopolis.interfaces.WorkflowClickListener;
+import cientopolis.cientopolis.models.ProjectsModel;
 
 /**
  * Created by nicolas.valentini on 2/7/17.
@@ -29,11 +20,11 @@ import cientopolis.cientopolis.interfaces.WorkflowClickListener;
 
 public class WorkflowAdapter extends RecyclerView.Adapter<WorkflowAdapter.ViewHolder> {
 
-    private List<String> workflows;
+    private List<ProjectsModel>  workflow;
     private WorkflowClickListener listener;
 
-    public WorkflowAdapter(List<String> workflows, WorkflowClickListener listener) {
-        this.workflows = workflows;
+    public WorkflowAdapter(List<ProjectsModel> workflows, WorkflowClickListener listener) {
+        this.workflow = workflows;
         this.listener = listener;
     }
 
@@ -44,20 +35,21 @@ public class WorkflowAdapter extends RecyclerView.Adapter<WorkflowAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.workflowDescription.setText(workflows.get(position));
-        holder.workflowName.setText("Número" + String.valueOf(position));
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.workflowDescription.setText(workflow.get(position).getName());
+        holder.workflowName.setText(workflow.get(position).getName());
+
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.clicked(1);
+                listener.clicked(workflow.get(position).getId());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return workflows.size();
+        return workflow.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
