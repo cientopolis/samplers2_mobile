@@ -1,3 +1,6 @@
 .idea/
 gradle/
 *.iml
+./Cientopolis/gradlew
+/Cientopolis/gradlew.bat
+Cientopolis/local.properties
