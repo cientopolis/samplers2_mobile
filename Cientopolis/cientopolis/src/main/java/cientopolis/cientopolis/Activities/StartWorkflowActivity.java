@@ -7,8 +7,10 @@ import android.view.MenuItem;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.cientopolis.samplers.authentication.AuthenticationManager;
 import org.cientopolis.samplers.framework.Workflow;
 import org.cientopolis.samplers.framework.base.BaseStep;
+import org.cientopolis.samplers.network.NetworkConfiguration;
 import org.cientopolis.samplers.ui.SamplersMainActivity;
 import org.cientopolis.samplers.ui.TakeSampleActivity;
 
@@ -38,11 +40,16 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//      Optional if you will use authentication, set the configuration
+        //AuthenticationManager.setAuthenticationEnabled(true);
+        //AuthenticationManager.setAuthenticationOptional(true);
         if(getIntent().hasExtra("workflowId")) {
             workflowId = (Integer) getIntent().getSerializableExtra("workflowId");
         }
         requestController = new RequestController(this.getApplicationContext(), this);
-        requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/"+workflowId.toString(), 6, getParams());
+        requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/"+workflowId, 6, getParams());
+        NetworkConfiguration.setURL("http://10.0.2.2:8000/webpage/workflow/"+workflowId+"/result");
+        NetworkConfiguration.setPARAM_NAME_SAMPLE("sample");
     }
 
     @Override
