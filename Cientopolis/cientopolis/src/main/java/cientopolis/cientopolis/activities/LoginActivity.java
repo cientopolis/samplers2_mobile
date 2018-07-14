@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signInButton.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.web_client_id))
                 .requestEmail()
                 .build();
 
@@ -95,9 +96,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                Log.v("LOGIN-RESULT",result.getSignInAccount().getDisplayName() );
+                GoogleSignInAccount account = result.getSignInAccount();
+                Log.v("LOGIN-RESULT",account.getDisplayName());
+                Log.v("TOKEN-ID",account.getIdToken());
             }
-            int statusCode = result.getStatus().getStatusCode();
         }
 
         mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);

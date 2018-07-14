@@ -7,6 +7,8 @@
     <string name="action_settings">Settings</string>
     <string name="empty_workflows">No hay Workflows</string>
     <string name="facebook_app_id">292874171260567</string>
+    <string name="web_client_id">150457634419-vnrdg8sl00qcl787r4h6h4kjt31nc28q.apps.googleusercontent.com </string>
+
 
     <string-array name="project_types">
         <item>Arboles</item>
