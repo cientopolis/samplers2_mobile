@@ -6,6 +6,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="empty_workflows">No hay Workflows</string>
+    <string name="facebook_app_id">292874171260567</string>
 
     <string-array name="project_types">
         <item>Arboles</item>

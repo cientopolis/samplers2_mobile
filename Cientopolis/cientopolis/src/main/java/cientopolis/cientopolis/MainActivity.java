@@ -1,5 +1,6 @@
 package cientopolis.cientopolis;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import cientopolis.cientopolis.activities.LoginActivity;
+import cientopolis.cientopolis.activities.StartWorkflowActivity;
 import cientopolis.cientopolis.fragments.LoginFragment;
 import cientopolis.cientopolis.fragments.MainFragment;
 import cientopolis.cientopolis.fragments.ProfileFragment;
@@ -108,8 +111,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.logout) {
             // logout
-            Fragment fragment = new LoginFragment();
-            goToFragment(fragment);
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.home){
             //home

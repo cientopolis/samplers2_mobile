@@ -2,15 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cientopolis.cientopolis">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--
-            Poner api key here
-        -->
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
        <activity
            android:name=".MainActivity"
            android:label="@string/app_name"
@@ -24,6 +31,8 @@
            </intent-filter>
        </activity>
        <activity android:name=".activities.StartWorkflowActivity" ></activity>
+        <activity android:name=".activities.LoginActivity" ></activity>
+
    </application>
 
 </manifest>
