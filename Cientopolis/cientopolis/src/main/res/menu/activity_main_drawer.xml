@@ -16,7 +16,7 @@
             android:title="Proyectos" />
 
         <item
-            android:id="@+id/logout"
+            android:id="@+id/login"
             android:icon="@drawable/logout"
             android:title="Iniciar Sesion" />
     </group>
