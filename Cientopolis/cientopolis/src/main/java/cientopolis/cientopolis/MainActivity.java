@@ -56,10 +56,14 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+        Menu nav_Menu = navigationView.getMenu();
         //TODO: si tengo algo en el sharedPReference
         if (false){
-            Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.login).setVisible(false);
+            nav_Menu.findItem(R.id.profile).setVisible(true);
+        } else {
+            nav_Menu.findItem(R.id.login).setVisible(true);
+            nav_Menu.findItem(R.id.profile).setVisible(false);
         }
         Fragment fragment = new MainFragment();
         goToFragment(fragment);
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().getItem(0).setChecked(true);
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.login).setVisible(false);
+            nav_Menu.findItem(R.id.profile).setVisible(true);
             Fragment fragment = new MainFragment();
             goToFragment(fragment);
         }

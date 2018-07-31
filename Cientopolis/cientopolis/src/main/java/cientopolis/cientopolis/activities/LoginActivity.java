@@ -24,11 +24,14 @@ import java.util.Map;
 import cientopolis.cientopolis.R;
 import cientopolis.cientopolis.RequestController;
 import cientopolis.cientopolis.interfaces.RequestControllerListener;
+import cientopolis.cientopolis.models.ProfileModel;
 import cientopolis.cientopolis.models.ResponseDTO;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, RequestControllerListener<String> {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, RequestControllerListener<ProfileModel> {
 
     private static final int RC_SIGN_IN = 9001;
+    private static final int USER_EXISTS_REQUEST = 1;
+    private static final int CREATE_USER_REQUEST = 2;
     private CallbackManager mFacebookCallbackManager;
     private LoginButton mFacebookSignInButton;
     private GoogleSignInClient mGoogleSignInClient;
@@ -64,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onSuccess(final LoginResult loginResult) {
                         Map<String, String> params = getParams();
                         responseOk(1,null);
-                        //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "login/", 1, params);
+                        //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "user-exist/", USER_EXISTS_REQUEST, params);
 
                     }
                     @Override
@@ -87,8 +90,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
@@ -97,7 +98,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.v("TOKEN-ID",account.getIdToken());
                 Map<String, String> params = getParams();
                 responseOk(2,null);
-                //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "login/", 2, params);
+                //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "user-exist/", USER_EXISTS_REQUEST, params);
             }
         }
 
@@ -127,20 +127,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    @Override
-    public void responseOk(Integer id, ResponseDTO<String> response) {
-        //TODO: guardar datos en sharedPreferences
+    private void goToMainActivity(Integer state) {
         Intent result = new Intent();
-        setResult(1, result);
+        setResult(state, result);
         finish();
+    }
+
+    @Override
+    public void responseOk(Integer id, ResponseDTO<ProfileModel> response) {
+        switch(id) {
+            case USER_EXISTS_REQUEST:
+                //result.data.exist
+                if(true){
+                    // guardar en shared preferences
+                    goToMainActivity(1);
+                } else {
+                    //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "create-user/", CREATE_USER_REQUEST, params);
+                }
+
+                break;
+            case CREATE_USER_REQUEST:
+                // guardar en shared preferences
+                goToMainActivity(1);
+                break;
+        }
 
     }
 
     @Override
-    public void responseError(Integer id, ResponseDTO<String> response) {
-        //TODO: error response
-        Intent result = new Intent();
-        setResult(2, result);
-        finish();
+    public void responseError(Integer id, ResponseDTO<ProfileModel> response) {
+        goToMainActivity(2);
     }
 }
