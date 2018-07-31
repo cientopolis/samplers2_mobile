@@ -18,8 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import cientopolis.cientopolis.activities.LoginActivity;
-import cientopolis.cientopolis.activities.StartWorkflowActivity;
-import cientopolis.cientopolis.fragments.LoginFragment;
 import cientopolis.cientopolis.fragments.MainFragment;
 import cientopolis.cientopolis.fragments.ProfileFragment;
 import cientopolis.cientopolis.fragments.WorkflowsFragment;
@@ -27,6 +25,10 @@ import cientopolis.cientopolis.fragments.SearchWorkflowFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int LOGIN_ACTIVITY_SUCCESS = 1;
+
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +53,18 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+        Menu nav_Menu = navigationView.getMenu();
+        //TODO: si tengo algo en el sharedPReference
+        if (false){
+            nav_Menu.findItem(R.id.login).setVisible(false);
+            nav_Menu.findItem(R.id.profile).setVisible(true);
+        } else {
+            nav_Menu.findItem(R.id.login).setVisible(true);
+            nav_Menu.findItem(R.id.profile).setVisible(false);
+        }
         Fragment fragment = new MainFragment();
         goToFragment(fragment);
     }
@@ -76,6 +87,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == LOGIN_ACTIVITY_SUCCESS) {
+            navigationView.getMenu().getItem(0).setChecked(true);
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.login).setVisible(false);
+            nav_Menu.findItem(R.id.profile).setVisible(true);
+            Fragment fragment = new MainFragment();
+            goToFragment(fragment);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -93,30 +117,23 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         if (id == R.id.workflows) {
-            // See workflows
             Fragment fragment = new WorkflowsFragment();
             goToFragment(fragment);
 
-
         } else if (id == R.id.profile) {
-            // look for a workflows
-            Fragment fragment = new SearchWorkflowFragment();
+            //TODO: obtener userId del sharedPreference
             goToFragment(ProfileFragment.newInstance(1));
 
-        } else if (id == R.id.logout) {
-            // logout
-
+        } else if (id == R.id.login) {
             Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, LOGIN_ACTIVITY_SUCCESS);
 
         } else if (id == R.id.home){
-            //home
             Fragment fragment = new MainFragment();
             goToFragment(fragment);
         }

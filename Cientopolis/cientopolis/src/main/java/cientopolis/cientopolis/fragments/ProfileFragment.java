@@ -28,8 +28,6 @@ public class ProfileFragment extends Fragment implements RequestControllerListen
     private RequestController requestController;
     private Integer profileId;
 
-
-
     public static ProfileFragment newInstance(Integer profileId) {
         ProfileFragment fragment = new ProfileFragment();
         fragment.profileId=profileId;
@@ -41,12 +39,20 @@ public class ProfileFragment extends Fragment implements RequestControllerListen
         requestController = new RequestController(getContext(), this);
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         if (savedInstanceState == null ) {
-            // if i haven´t an instance i request for one.
-            Map<String, String> params = getParams();
-            requestController.get(new TypeToken<ResponseDTO<WorkflowDetailModel>>() {}.getType(), "profile/"+profileId.toString(), 6, params);
+            //TODO obtener valores del shared preferences
+            if(true){
+                //TODO loader
+                Map<String, String> params = getParams();
+                requestController.get(new TypeToken<ResponseDTO<WorkflowDetailModel>>() {}.getType(), "profile/"+profileId.toString(), 6, params);
+            } else {
+                responseError(1,null);
+            }
+
         } else {
-            //
+
+
         }
+
         return view;
     }
 
@@ -57,11 +63,16 @@ public class ProfileFragment extends Fragment implements RequestControllerListen
 
     @Override
     public void responseOk(Integer id, final ResponseDTO<ProfileModel> response) {
-
+        //TODO: draw profile
     }
 
     @Override
     public void responseError(Integer id, ResponseDTO<ProfileModel> response) {
+        switch (id) {
+            // is not logued in
+            case 1:
 
+                break;
+        }
     }
 }

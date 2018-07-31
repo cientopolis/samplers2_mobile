@@ -7,11 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookButtonBase;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -21,20 +19,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
-
-import java.util.concurrent.Callable;
-
+import java.util.HashMap;
+import java.util.Map;
 import cientopolis.cientopolis.R;
+import cientopolis.cientopolis.RequestController;
+import cientopolis.cientopolis.interfaces.RequestControllerListener;
+import cientopolis.cientopolis.models.ProfileModel;
+import cientopolis.cientopolis.models.ResponseDTO;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, RequestControllerListener<ProfileModel> {
 
     private static final int RC_SIGN_IN = 9001;
+    private static final int USER_EXISTS_REQUEST = 1;
+    private static final int CREATE_USER_REQUEST = 2;
     private CallbackManager mFacebookCallbackManager;
     private LoginButton mFacebookSignInButton;
     private GoogleSignInClient mGoogleSignInClient;
     private SignInButton signInButton;
+    private RequestController requestController;
 
 
     @Override
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         mFacebookSignInButton = (LoginButton)findViewById(R.id.facebook_sign_in_button);
+        requestController = new RequestController(getApplicationContext(), this);
         signInButton = (SignInButton)findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(this);
@@ -58,32 +61,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
-
         mFacebookSignInButton.registerCallback(mFacebookCallbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-                        String name = loginResult.getAccessToken().getUserId();
-                        Log.v("LOGIN-RESULT",loginResult.getAccessToken().getUserId() );
+                        Map<String, String> params = getParams();
+                        responseOk(1,null);
+                        //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "user-exist/", USER_EXISTS_REQUEST, params);
+
                     }
                     @Override
                     public void onCancel() {
-
+                        responseError(1,null);
                     }
                     @Override
                     public void onError(FacebookException error) {
-
+                        responseError(1,null);
                     }
                 }
         );
     }
 
+    private Map<String, String> getParams(){
+        Map<String, String> params = new HashMap<>();
+        return params;
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-// the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
@@ -92,13 +98,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 Log.v("LOGIN-RESULT",account.getDisplayName());
                 Log.v("TOKEN-ID",account.getIdToken());
+                Map<String, String> params = getParams();
+                responseOk(2,null);
+                //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "user-exist/", USER_EXISTS_REQUEST, params);
             }
         }
 
@@ -119,16 +127,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            String name = account.getDisplayName();
-            Log.v("LOGIN-RESULT",account.getDisplayName() );
-            // Signed in successfully, show authenticated UI.
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.v("EXCEPTION","signInResult:failed code=" + e.getStatusCode() );
+    private void goToMainActivity(Integer state) {
+        Intent result = new Intent();
+        setResult(state, result);
+        finish();
+    }
+
+    @Override
+    public void responseOk(Integer id, ResponseDTO<ProfileModel> response) {
+        switch(id) {
+            case USER_EXISTS_REQUEST:
+                //result.data.exist
+                if(true){
+                    // guardar en shared preferences
+                    goToMainActivity(1);
+                } else {
+                    //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "create-user/", CREATE_USER_REQUEST, params);
+                }
+
+                break;
+            case CREATE_USER_REQUEST:
+                // guardar en shared preferences
+                goToMainActivity(1);
+                break;
         }
+
+    }
+
+    @Override
+    public void responseError(Integer id, ResponseDTO<ProfileModel> response) {
+        goToMainActivity(2);
     }
 }
