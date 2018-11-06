@@ -7,7 +7,6 @@ import android.view.MenuItem;
 
 import com.google.gson.reflect.TypeToken;
 
-import org.cientopolis.samplers.authentication.AuthenticationManager;
 import org.cientopolis.samplers.framework.Workflow;
 import org.cientopolis.samplers.framework.base.BaseStep;
 import org.cientopolis.samplers.network.NetworkConfiguration;
@@ -49,10 +48,8 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
         requestController = new RequestController(this.getApplicationContext(), this);
         requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/"+workflowId, 6, getParams());
         //Este id esta harcodeado, sacarlo del shared preference
-        String userId = "1";
-        NetworkConfiguration.setURL("http://10.0.2.2:8000/webpage/workflow/"+workflowId+"/result?userId="+userId);
+        NetworkConfiguration.setURL("http://10.0.2.2:8000/webpage/workflow/"+workflowId+"/result");
         NetworkConfiguration.setPARAM_NAME_SAMPLE("sample");
-        NetworkConfiguration.setPARAM_NAME_USER_ID("1");
 
     }
 
@@ -87,8 +84,8 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
         for (BaseStep step: steps) {
             workflow.addStep(step);
         }
-
-
+        //Aca es donde se tiene que sacar el id de usuario del shared preference y setearlo
+        workflow.addCustomParam("userId","1");
         return workflow;
     }
 
