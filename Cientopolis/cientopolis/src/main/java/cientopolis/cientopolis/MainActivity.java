@@ -1,6 +1,8 @@
 package cientopolis.cientopolis;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -19,7 +21,6 @@ import android.view.MenuItem;
 
 import cientopolis.cientopolis.activities.LoginActivity;
 import cientopolis.cientopolis.fragments.MainFragment;
-import cientopolis.cientopolis.fragments.ProfileFragment;
 import cientopolis.cientopolis.fragments.WorkflowsFragment;
 import cientopolis.cientopolis.fragments.SearchWorkflowFragment;
 
@@ -57,13 +58,15 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
         Menu nav_Menu = navigationView.getMenu();
-        //TODO: si tengo algo en el sharedPReference
-        if (false){
+        SharedPreferences sharedPref = this.getSharedPreferences("Profile", Context.MODE_PRIVATE);
+        String defaultValue = "";
+        String uid = sharedPref.getString("uid", defaultValue);
+        if (uid != defaultValue){
             nav_Menu.findItem(R.id.login).setVisible(false);
-            nav_Menu.findItem(R.id.profile).setVisible(true);
+            nav_Menu.findItem(R.id.logout).setVisible(true);
         } else {
             nav_Menu.findItem(R.id.login).setVisible(true);
-            nav_Menu.findItem(R.id.profile).setVisible(false);
+            nav_Menu.findItem(R.id.logout).setVisible(false);
         }
         Fragment fragment = new MainFragment();
         goToFragment(fragment);
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().getItem(0).setChecked(true);
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.login).setVisible(false);
-            nav_Menu.findItem(R.id.profile).setVisible(true);
+            nav_Menu.findItem(R.id.logout).setVisible(true);
             Fragment fragment = new MainFragment();
             goToFragment(fragment);
         }
@@ -125,9 +128,8 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = new WorkflowsFragment();
             goToFragment(fragment);
 
-        } else if (id == R.id.profile) {
-            //TODO: obtener userId del sharedPreference
-            goToFragment(ProfileFragment.newInstance(1));
+        } else if (id == R.id.logout) {
+            //TODO : logout
 
         } else if (id == R.id.login) {
             Intent intent = new Intent(this, LoginActivity.class);

@@ -1,6 +1,8 @@
 package cientopolis.cientopolis.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +49,6 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
         }
         requestController = new RequestController(this.getApplicationContext(), this);
         requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/"+workflowId, 6, getParams());
-        //Este id esta harcodeado, sacarlo del shared preference
         NetworkConfiguration.setURL("http://10.0.2.2:8000/webpage/workflow/"+workflowId+"/result");
         NetworkConfiguration.setPARAM_NAME_SAMPLE("sample");
 
@@ -84,8 +85,14 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
         for (BaseStep step: steps) {
             workflow.addStep(step);
         }
-        //Aca es donde se tiene que sacar el id de usuario del shared preference y setearlo
-        workflow.addCustomParam("userId","1");
+        SharedPreferences sharedPref = this.getSharedPreferences("Profile", Context.MODE_PRIVATE);
+        String defaultValue = "";
+        String uid = sharedPref.getString("uid", defaultValue);
+
+        if(uid != ""){
+            workflow.addCustomParam("userId",uid);
+        }
+
         return workflow;
     }
 

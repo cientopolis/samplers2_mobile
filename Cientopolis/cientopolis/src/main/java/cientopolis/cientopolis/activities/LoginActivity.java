@@ -1,10 +1,13 @@
 package cientopolis.cientopolis.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -19,23 +22,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.HashMap;
 import java.util.Map;
 import cientopolis.cientopolis.R;
 import cientopolis.cientopolis.RequestController;
 import cientopolis.cientopolis.interfaces.RequestControllerListener;
+import cientopolis.cientopolis.models.LoginResponse;
 import cientopolis.cientopolis.models.ProfileModel;
 import cientopolis.cientopolis.models.ResponseDTO;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, RequestControllerListener<ProfileModel> {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, RequestControllerListener<LoginResponse> {
 
     private static final int RC_SIGN_IN = 9001;
     private static final int USER_EXISTS_REQUEST = 1;
-    private static final int CREATE_USER_REQUEST = 2;
     private CallbackManager mFacebookCallbackManager;
     private LoginButton mFacebookSignInButton;
     private GoogleSignInClient mGoogleSignInClient;
     private SignInButton signInButton;
+    private String uid;
     private RequestController requestController;
 
 
@@ -66,17 +72,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
                         Map<String, String> params = getParams();
-                        responseOk(1,null);
-                        //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "user-exist/", USER_EXISTS_REQUEST, params);
+                        uid = loginResult.getAccessToken().getUserId();
+                        requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
 
                     }
                     @Override
                     public void onCancel() {
-                        responseError(1,null);
                     }
                     @Override
                     public void onError(FacebookException error) {
-                        responseError(1,null);
                     }
                 }
         );
@@ -105,8 +109,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.v("LOGIN-RESULT",account.getDisplayName());
                 Log.v("TOKEN-ID",account.getIdToken());
                 Map<String, String> params = getParams();
-                responseOk(2,null);
-                //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "user-exist/", USER_EXISTS_REQUEST, params);
+                uid = account.getId();
+                requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
             }
         }
 
@@ -134,28 +138,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void responseOk(Integer id, ResponseDTO<ProfileModel> response) {
+    public void responseOk(Integer id, ResponseDTO<LoginResponse> response) {
         switch(id) {
             case USER_EXISTS_REQUEST:
-                //result.data.exist
-                if(true){
-                    // guardar en shared preferences
+                if (response.getData().getExists()) {
+                    SharedPreferences sharedPref = getSharedPreferences("Profile", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("uid",uid );
+                    editor.commit();
                     goToMainActivity(1);
                 } else {
-                    //requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "create-user/", CREATE_USER_REQUEST, params);
+                    responseError(1,response);
                 }
 
-                break;
-            case CREATE_USER_REQUEST:
-                // guardar en shared preferences
-                goToMainActivity(1);
                 break;
         }
 
     }
 
     @Override
-    public void responseError(Integer id, ResponseDTO<ProfileModel> response) {
+    public void responseError(Integer id, ResponseDTO<LoginResponse> response) {
+
+        //cancelar la pegada a FB o G
         goToMainActivity(2);
     }
 }
