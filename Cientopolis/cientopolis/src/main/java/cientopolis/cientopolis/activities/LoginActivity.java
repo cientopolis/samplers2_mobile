@@ -30,7 +30,6 @@ import cientopolis.cientopolis.R;
 import cientopolis.cientopolis.RequestController;
 import cientopolis.cientopolis.interfaces.RequestControllerListener;
 import cientopolis.cientopolis.models.LoginResponse;
-import cientopolis.cientopolis.models.ProfileModel;
 import cientopolis.cientopolis.models.ResponseDTO;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, RequestControllerListener<LoginResponse> {
@@ -109,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.v("LOGIN-RESULT",account.getDisplayName());
                 Log.v("TOKEN-ID",account.getIdToken());
                 Map<String, String> params = getParams();
-                uid = account.getId();
+                uid = account.getEmail();
                 requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
             }
         }
@@ -141,10 +140,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void responseOk(Integer id, ResponseDTO<LoginResponse> response) {
         switch(id) {
             case USER_EXISTS_REQUEST:
-                if (response.getData().getExists()) {
+                if (response.getData().getUserInformation() != null) {
                     SharedPreferences sharedPref = getSharedPreferences("Profile", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("uid",String.valueOf(response.getData().getUserInformation().getId()) );
+
                     editor.commit();
                     goToMainActivity(1);
                 } else {
@@ -159,7 +158,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void responseError(Integer id, ResponseDTO<LoginResponse> response) {
 
-        //cancelar la pegada a FB o G
+        //cancelar la pegada a FB o G y mostrar
         goToMainActivity(2);
     }
 }
