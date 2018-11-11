@@ -68,7 +68,7 @@ public class RequestController {
                             if (responseObject.getStatusCode().equals("200")) {
                                 listener.responseOk(id, responseObject);
                             } else {
-                                if (responseObject.getErrorCode() == 24){
+                                if (responseObject.getErrorCode() != null && responseObject.getErrorCode() == 24){
                                     //problema de autenticacion
                                 }else{
                                     listener.responseError(id, responseObject);

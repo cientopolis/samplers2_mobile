@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onSuccess(final LoginResult loginResult) {
                         Map<String, String> params = getParams();
                         uid = loginResult.getAccessToken().getUserId();
-                        requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
+                        requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
 
                     }
                     @Override
@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.v("TOKEN-ID",account.getIdToken());
                 Map<String, String> params = getParams();
                 uid = account.getEmail();
-                requestController.get(new TypeToken<ResponseDTO<String>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
+                requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
             }
         }
 
@@ -159,6 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void responseError(Integer id, ResponseDTO<LoginResponse> response) {
 
         //cancelar la pegada a FB o G y mostrar
+        Log.d("Pasa por aca",response.toString());
         goToMainActivity(2);
     }
 }
