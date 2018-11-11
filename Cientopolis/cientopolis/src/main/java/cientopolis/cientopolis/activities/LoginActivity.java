@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (response.getData().getExists()) {
                     SharedPreferences sharedPref = getSharedPreferences("Profile", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("uid",uid );
+                    editor.putString("uid",String.valueOf(response.getData().getUserInformation().getId()) );
                     editor.commit();
                     goToMainActivity(1);
                 } else {
