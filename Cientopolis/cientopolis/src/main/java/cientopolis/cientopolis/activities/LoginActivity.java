@@ -13,6 +13,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -23,6 +25,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,9 +74,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-                        Map<String, String> params = getParams();
-                        uid = loginResult.getAccessToken().getUserId();
-                        requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
+                        String id1 = loginResult.getAccessToken().getUserId();
+                        GraphRequest request =  GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject me, GraphResponse response) {
+
+                                        if (response.getError() != null) {
+                                            String errpr = "";
+                                        } else {
+                                            Map<String, String> params = getParams();
+                                            uid = response.getJSONObject().optString("token_for_business");
+                                            requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid+"provider=facebook", USER_EXISTS_REQUEST, params);
+
+                                        }
+                                    }
+                                });
+
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "last_name,first_name,email,token_for_business");
+                        request.setParameters(parameters);
+                        request.executeAsync();
 
                     }
                     @Override
@@ -109,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.v("TOKEN-ID",account.getIdToken());
                 Map<String, String> params = getParams();
                 uid = account.getEmail();
-                requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid, USER_EXISTS_REQUEST, params);
+                requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid+"provider=gmail", USER_EXISTS_REQUEST, params);
             }
         }
 
