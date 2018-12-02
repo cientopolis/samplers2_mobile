@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         } else {
                                             Map<String, String> params = getParams();
                                             uid = response.getJSONObject().optString("token_for_business");
-                                            requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid+"provider=facebook", USER_EXISTS_REQUEST, params);
+                                            requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid+"&provider=facebook", USER_EXISTS_REQUEST, params);
 
                                         }
                                     }
@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.v("TOKEN-ID",account.getIdToken());
                 Map<String, String> params = getParams();
                 uid = account.getEmail();
-                requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid+"provider=gmail", USER_EXISTS_REQUEST, params);
+                requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid+"&provider=gmail", USER_EXISTS_REQUEST, params);
             }
         }
 
@@ -160,26 +160,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void responseOk(Integer id, ResponseDTO<LoginResponse> response) {
-        switch(id) {
-            case USER_EXISTS_REQUEST:
-                if (response.getData().getUserInformation() != null) {
-                    SharedPreferences sharedPref = getSharedPreferences("Profile", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-
-                    editor.commit();
-                    goToMainActivity(1);
-                } else {
-                    responseError(1,response);
-                }
-
-                break;
+        if (response.getData().getUserInformation() != null) {
+            SharedPreferences sharedPref = getSharedPreferences("Profile", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("id", String.valueOf(response.getData().getUserInformation().getId()));
+            editor.putString("username", response.getData().getUserInformation().getUsername());
+            editor.putString("email", response.getData().getUserInformation().getEmail());
+            editor.commit();
+            goToMainActivity(1);
+        } else {
+            responseError(1,response);
         }
-
     }
 
     @Override
     public void responseError(Integer id, ResponseDTO<LoginResponse> response) {
-
         //cancelar la pegada a FB o G y mostrar
         Log.d("Pasa por aca",response.toString());
         goToMainActivity(2);

@@ -6,10 +6,7 @@
             android:id="@+id/home"
             android:icon="@drawable/ic_home"
             android:title="Inicio" />
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/ic_profile"
-            android:title="Cerrar sesion" />
+
         <item
             android:id="@+id/workflows"
             android:icon="@drawable/ic_menu_camera"
@@ -19,6 +16,10 @@
             android:id="@+id/login"
             android:icon="@drawable/logout"
             android:title="Iniciar Sesion" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_profile"
+            android:title="Cerrar sesion" />
     </group>
 
 

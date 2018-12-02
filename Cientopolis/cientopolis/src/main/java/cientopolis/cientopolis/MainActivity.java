@@ -18,6 +18,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.facebook.login.LoginManager;
 
 import cientopolis.cientopolis.activities.LoginActivity;
 import cientopolis.cientopolis.fragments.MainFragment;
@@ -55,15 +58,21 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        TextView nav_user = (TextView)hView.findViewById(R.id.nav_user);
+        TextView nav_email = (TextView)hView.findViewById(R.id.nav_email);
+
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
         Menu nav_Menu = navigationView.getMenu();
         SharedPreferences sharedPref = this.getSharedPreferences("Profile", Context.MODE_PRIVATE);
         String defaultValue = "";
-        String uid = sharedPref.getString("uid", defaultValue);
+        String uid = sharedPref.getString("id", defaultValue);
         if (uid != defaultValue){
             nav_Menu.findItem(R.id.login).setVisible(false);
             nav_Menu.findItem(R.id.logout).setVisible(true);
+            nav_user.setText(sharedPref.getString("username", defaultValue));
+            nav_email.setText(sharedPref.getString("email", defaultValue));
         } else {
             nav_Menu.findItem(R.id.login).setVisible(true);
             nav_Menu.findItem(R.id.logout).setVisible(false);
@@ -94,6 +103,12 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == LOGIN_ACTIVITY_SUCCESS) {
             navigationView.getMenu().getItem(0).setChecked(true);
+            View hView =  navigationView.getHeaderView(0);
+            TextView nav_user = (TextView)hView.findViewById(R.id.nav_user);
+            TextView nav_email = (TextView)hView.findViewById(R.id.nav_email);
+            SharedPreferences sharedPref = this.getSharedPreferences("Profile", Context.MODE_PRIVATE);
+            nav_user.setText(sharedPref.getString("username", ""));
+            nav_email.setText(sharedPref.getString("email", ""));
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.login).setVisible(false);
             nav_Menu.findItem(R.id.logout).setVisible(true);
@@ -129,7 +144,13 @@ public class MainActivity extends AppCompatActivity
             goToFragment(fragment);
 
         } else if (id == R.id.logout) {
-            //TODO : logout
+            SharedPreferences sharedPref = getSharedPreferences("Profile", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("id", "");
+            LoginManager.getInstance().logOut();
+            editor.commit();
+            finish();
+            startActivity(getIntent());
 
         } else if (id == R.id.login) {
             Intent intent = new Intent(this, LoginActivity.class);
