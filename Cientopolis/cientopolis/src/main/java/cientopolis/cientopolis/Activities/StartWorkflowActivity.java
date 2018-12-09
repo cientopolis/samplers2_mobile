@@ -89,10 +89,7 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
         String defaultValue = "";
         String uid = sharedPref.getString("uid", defaultValue);
 
-        if(uid != ""){
-            workflow.addCustomParam("userId",uid);
-        }
-
+        workflow.addCustomParam("userId",uid);
         return workflow;
     }
 
