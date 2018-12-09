@@ -15,6 +15,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -177,6 +178,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void responseError(Integer id, ResponseDTO<LoginResponse> response) {
         //cancelar la pegada a FB o G y mostrar
         Log.d("Pasa por aca",response.toString());
+        LoginManager.getInstance().logOut();
         goToMainActivity(2);
     }
 }
