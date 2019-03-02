@@ -25,7 +25,6 @@ import com.facebook.login.LoginManager;
 import cientopolis.cientopolis.activities.LoginActivity;
 import cientopolis.cientopolis.fragments.MainFragment;
 import cientopolis.cientopolis.fragments.WorkflowsFragment;
-import cientopolis.cientopolis.fragments.SearchWorkflowFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -115,21 +114,6 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = new MainFragment();
             goToFragment(fragment);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

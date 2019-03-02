@@ -20,13 +20,6 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:padding="8dp">
-            <ImageView
-                android:padding="8dp"
-                android:id="@+id/image"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_flowers"/>
 
 
             <LinearLayout
@@ -50,19 +43,17 @@
                             android:id="@+id/workflow_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:textSize="26dp"
-                            android:text="Nombre del proyecto"
-                            android:textColor="@color/colorPrimaryDark"/>
+                            android:text="Nombre de ejemplo"
+                            android:textColor="@color/black"/>
 
                         <TextView
-                            android:id="@+id/workflow_description"
+                            android:id="@+id/workflow_owner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Breve descripcion del proyecto"
-
-                            android:textSize="12sp"/>
+                            android:text="Nicolas Valentini"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"/>
 
                     </LinearLayout>
 

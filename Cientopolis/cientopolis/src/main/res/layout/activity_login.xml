@@ -1,25 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:background="@color/white"
     android:layout_height="match_parent">
 
+
     <LinearLayout
-        android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:orientation="vertical">
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebook_sign_in_button"
+        <ImageView
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="124dp"
+
+            android:layout_gravity="top"
+            android:src="@drawable/muestrar" />
+
+
+
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="16dp"
+            android:textSize="18dp"
+            android:textColor="@color/grey500"
+            android:text="@string/login_description"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:id="@+id/error_title"
+            android:textSize="16dp"
+            android:visibility="gone"
+            android:textColor="@color/redA100"
+            android:text="Error"
+            android:textAlignment="textStart"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/error_description"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:text="Descripcion del error"
+            android:textAlignment="textStart"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/link"
+            android:autoLink="web"
+            android:linksClickable="true"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:text="Descripcion del error"
+            android:textAlignment="textStart"/>
+
+        <com.facebook.login.widget.LoginButton
+            xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            facebook:com_facebook_login_text="Inicia con Facebook"
+            android:id="@+id/facebook_sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
             android:layout_gravity="center_horizontal" />
+
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="40dp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

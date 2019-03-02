@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -44,9 +47,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CallbackManager mFacebookCallbackManager;
     private LoginButton mFacebookSignInButton;
     private GoogleSignInClient mGoogleSignInClient;
+    private TextView errorTitle;
+    private TextView errorDescription;
     private SignInButton signInButton;
     private String uid;
     private RequestController requestController;
+    private TextView link;
 
 
     @Override
@@ -57,11 +63,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         setContentView(R.layout.activity_login);
 
+        errorDescription = (TextView) findViewById(R.id.error_description);
+        errorTitle = (TextView) findViewById(R.id.error_title);
+        link = (TextView) findViewById(R.id.link);
+        link.setClickable(true);
+        link.setMovementMethod(LinkMovementMethod.getInstance());
+
         mFacebookSignInButton = (LoginButton)findViewById(R.id.facebook_sign_in_button);
         requestController = new RequestController(getApplicationContext(), this);
         signInButton = (SignInButton)findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(this);
+        setGooglePlusButtonText(signInButton, "Inicia con Gmail");
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.web_client_id))
@@ -84,6 +97,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         if (response.getError() != null) {
                                             String errpr = "";
                                         } else {
+                                            errorTitle.setVisibility(View.GONE);
+                                            errorDescription.setVisibility(View.GONE);
+                                            link.setVisibility(View.GONE);
                                             Map<String, String> params = getParams();
                                             uid = response.getJSONObject().optString("token_for_business");
                                             requestController.get(new TypeToken<ResponseDTO<LoginResponse>>() {}.getType(), "login?uid="+uid+"&provider=facebook", USER_EXISTS_REQUEST, params);
@@ -107,6 +123,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
         );
     }
+
+    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
+    }
+
 
     private Map<String, String> getParams(){
         Map<String, String> params = new HashMap<>();
@@ -143,6 +173,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
+                errorTitle.setVisibility(View.GONE);
+                errorDescription.setVisibility(View.GONE);
+                link.setVisibility(View.GONE);
                 signIn();
                 break;
         }
@@ -176,9 +209,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void responseError(Integer id, ResponseDTO<LoginResponse> response) {
-        //cancelar la pegada a FB o G y mostrar
-        Log.d("Pasa por aca",response.toString());
         LoginManager.getInstance().logOut();
-        goToMainActivity(2);
+        String textError = !response.getData().getExists() ? "Primero registrate en :" : "Hubo un error inesperado";
+        errorDescription.setText(textError);
+        errorTitle.setVisibility(View.VISIBLE);
+        link.setVisibility(View.VISIBLE);
+        link.setText(Html.fromHtml(response.getData().getRedirectUrl()));
+        errorDescription.setVisibility(View.VISIBLE);
     }
 }

@@ -36,7 +36,7 @@ public class WorkflowAdapter extends RecyclerView.Adapter<WorkflowAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.workflowDescription.setText(workflow.get(position).getName());
+        holder.workflowOwner.setText(workflow.get(position).getOwner());
         holder.workflowName.setText(workflow.get(position).getName());
 
         holder.card.setOnClickListener(new View.OnClickListener() {
@@ -53,16 +53,14 @@ public class WorkflowAdapter extends RecyclerView.Adapter<WorkflowAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView workflowDescription;
+        TextView workflowOwner;
         TextView workflowName;
-        ImageView workflowType;
         CardView card;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            workflowDescription = (TextView) itemView.findViewById(R.id.workflow_description);
+            workflowOwner = (TextView) itemView.findViewById(R.id.workflow_owner);
             workflowName = (TextView) itemView.findViewById(R.id.workflow_name);
-            workflowType = (ImageView) itemView.findViewById(R.id.image);
             card = (CardView) itemView.findViewById(R.id.workflowCard);
 
         }

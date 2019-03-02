@@ -3,6 +3,8 @@ package cientopolis.cientopolis.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +32,11 @@ public class WorklowDetailfragment extends Fragment implements RequestController
     private View view;
     private Button joinButton;
     private TextView description ;
+    private TextView name ;
+    private TextView startDate ;
     private RequestController requestController;
     private Integer projectId;
+
 
 
 
@@ -46,7 +51,9 @@ public class WorklowDetailfragment extends Fragment implements RequestController
         requestController = new RequestController(getContext(), this);
         view = inflater.inflate(R.layout.fragment_workflow_detail, container, false);
         joinButton = (Button) view.findViewById(R.id.join_project);
-        description = (TextView) view.findViewById(R.id.text_description);
+        description = (TextView) view.findViewById(R.id.description);
+        name = (TextView) view.findViewById(R.id.name);
+        startDate = (TextView) view.findViewById(R.id.start_date);
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,13 +62,9 @@ public class WorklowDetailfragment extends Fragment implements RequestController
                 startActivity(intent);
             }
         });
-        if (savedInstanceState == null ) {
-            // if i haven´t an instance i request for one.
-            Map<String, String> params = getParams();
-            requestController.get(new TypeToken<ResponseDTO<WorkflowDetailModel>>() {}.getType(), "project/"+projectId.toString(), 6, params);
-        } else {
-            //
-        }
+
+        Map<String, String> params = getParams();
+        requestController.get(new TypeToken<ResponseDTO<WorkflowDetailModel>>() {}.getType(), "project/"+projectId.toString(), 6, params);
         return view;
     }
 
@@ -73,11 +76,13 @@ public class WorklowDetailfragment extends Fragment implements RequestController
     @Override
     public void responseOk(Integer id, final ResponseDTO<WorkflowDetailModel> response) {
         description.setText(response.getData().getDescription());
+        name.setText(response.getData().getName());
+        startDate.setText(response.getData().getCreatedDate());
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), StartWorkflowActivity.class);
-                //agregar id del workflow para buscarlo en StartWorkflowActivity
+                //agrega id del workflow para buscarlo en StartWorkflowActivity
                 intent.putExtra("workflowId", response.getData().getWorkflow());
                 startActivity(intent);
             }
