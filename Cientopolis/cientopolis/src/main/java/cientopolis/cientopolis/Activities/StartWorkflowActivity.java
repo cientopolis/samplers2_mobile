@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -109,6 +110,7 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
 
     @Override
     public void responseError(Integer id, ResponseDTO<WorkflowModel> response) {
-
+        Toast errorToast = Toast.makeText(getApplicationContext(), "Ocurrio un error inesperado, por favor intente otra vez.", Toast.LENGTH_SHORT);
+        errorToast.show();
     }
 }

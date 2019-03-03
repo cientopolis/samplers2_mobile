@@ -6,6 +6,7 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:textColor="@color/black"
         android:layout_marginTop="16dp"
         android:text="Nombre de ejemplo"
@@ -15,6 +16,7 @@
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:text="Este sector esta destinado a poder brindarle ayuda al usuario un poco mas acerca del proyecto del que podria participar"
         android:layout_gravity="left"
@@ -26,6 +28,7 @@
     <TextView
         android:id="@+id/start_date"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:text="12/05/2018"
         android:textAlignment="viewEnd"
@@ -41,6 +44,7 @@
         android:layout_marginLeft="16dp"
         android:layout_gravity="center"
         android:backgroundTint="@color/colorPrimaryDark"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

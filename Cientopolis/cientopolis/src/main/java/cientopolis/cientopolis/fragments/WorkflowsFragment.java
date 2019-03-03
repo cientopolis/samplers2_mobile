@@ -28,6 +28,7 @@ import cientopolis.cientopolis.models.ProjectsModel;
 import cientopolis.cientopolis.models.ResponseDTO;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -128,6 +129,9 @@ public class WorkflowsFragment extends Fragment implements RequestControllerList
 
     @Override
     public void responseError(Integer id, ResponseDTO<List<ProjectsModel>>  response) {
+        downloading.setVisibility(View.GONE);
+        Toast errorToast = Toast.makeText(getContext().getApplicationContext(), "Ocurrio un error inesperado, por favor intente otra vez.", Toast.LENGTH_SHORT);
+        errorToast.show();
 
     }
 }

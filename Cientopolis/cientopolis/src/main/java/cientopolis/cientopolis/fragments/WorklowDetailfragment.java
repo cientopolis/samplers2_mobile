@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -75,6 +76,10 @@ public class WorklowDetailfragment extends Fragment implements RequestController
 
     @Override
     public void responseOk(Integer id, final ResponseDTO<WorkflowDetailModel> response) {
+        description.setVisibility(View.VISIBLE);
+        name.setVisibility(View.VISIBLE);
+        startDate.setVisibility(View.VISIBLE);
+        joinButton.setVisibility(View.VISIBLE);
         description.setText(response.getData().getDescription());
         name.setText(response.getData().getName());
         startDate.setText(response.getData().getCreatedDate());
@@ -91,7 +96,8 @@ public class WorklowDetailfragment extends Fragment implements RequestController
 
     @Override
     public void responseError(Integer id, ResponseDTO<WorkflowDetailModel> response) {
-
+        Toast errorToast = Toast.makeText(getContext().getApplicationContext(), "Ocurrio un error inesperado, por favor intente otra vez.", Toast.LENGTH_SHORT);
+        errorToast.show();
     }
 }
 
