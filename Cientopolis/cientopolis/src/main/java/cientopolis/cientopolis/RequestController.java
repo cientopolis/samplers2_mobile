@@ -32,7 +32,7 @@ import cientopolis.cientopolis.models.ResponseDTO;
 
 public class RequestController {
 
-    private final String URL = "http://10.0.2.2:8000/webpage/";
+    private final String URL = "http://192.168.0.176:8000/webpage/";
     private VolleyManager volleyManager;
     private Context context;
     private RequestControllerListener listener;
