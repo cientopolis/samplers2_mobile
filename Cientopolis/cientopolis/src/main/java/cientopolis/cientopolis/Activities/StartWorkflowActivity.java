@@ -50,7 +50,7 @@ public class StartWorkflowActivity extends SamplersMainActivity implements Reque
         }
         requestController = new RequestController(this.getApplicationContext(), this);
         requestController.get(new TypeToken<ResponseDTO<WorkflowModel>>() {}.getType(), "workflow/"+workflowId, 6, getParams());
-        NetworkConfiguration.setURL("http://10.0.2.2:8000/webpage/workflow/"+workflowId+"/result");
+        NetworkConfiguration.setURL(RequestController.URL + "workflow/"+workflowId+"/result");
         NetworkConfiguration.setPARAM_NAME_SAMPLE("sample");
 
     }
